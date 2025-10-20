@@ -22,6 +22,7 @@ services:
             MYSQL_ALLOW_EMPTY_PASSWORD: 0
         volumes:
             - mysql-data:/var/lib/mysql
+            - ./sql:/root/sql
 
 volumes:
     mysql-data:
