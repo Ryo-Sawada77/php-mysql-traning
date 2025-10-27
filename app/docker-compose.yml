@@ -7,6 +7,10 @@ services:
             context: ..
             dockerfile: docker/php8.4/Dockerfile
             target: 'base'
+        volumes:
+            - ./src:/var/www/html   
+        ports:
+            - "8080:80"
     mysql-server:
         env_file:
             - '.env'
@@ -26,4 +30,4 @@ services:
 
 volumes:
     mysql-data:
-        driver: local
+        driver: local     

@@ -1,1 +1,4 @@
 FROM public.ecr.aws/docker/library/php:8.4-fpm AS base
+
+RUN docker-php-ext-install  \
+      pdo_mysql
