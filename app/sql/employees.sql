@@ -1,11 +1,11 @@
 USE training_db;
 
 CREATE TABLE employees(
-  id INT NOT NULL AUTO_INCREMENT,
-  staff_id VARCHAR(20) NOT NULL UNIQUE,
-  name VARCHAR(100) NOT NULL,
-  joined_at DATE NOT NULL,
-  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON CURRENT_TIMESTAMP,
-  PRIMARY KEY(id)
+  employee_number INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  family_name VARCHAR(64) NOT NULL,
+  address VARCHAR(255) NOT NULL,
+  phone_number VARCHAR(20) NOT NULL,
+  employee_type_id INT NOT NULL,
+  PRIMARY KEY(employee_number),
+  FOREIGN KEY(employee_type_id) REFERENCES employee_types(id)
 );
