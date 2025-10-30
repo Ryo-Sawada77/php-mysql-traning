@@ -1,0 +1,89 @@
+
+/* 全体リセットとフォント */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Yu Gothic", "Hiragino Kaku Gothic Pro", Meiryo, sans-serif;
+}
+
+/* body 全体の余白と背景 */
+body {
+    background-color: #f9f9f9;
+    padding: 20px;
+    color: #333;
+}
+
+/* 見出し */
+h1 {
+    margin-bottom: 20px;
+    font-size: 2em;
+    color: #222;
+    text-align: center;
+}
+
+/* フォーム全体 */
+form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 6px;
+    max-width: 600px;
+    margin: 0 auto 20px; /* 中央寄せ＋下余白 */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* 各フォーム項目 */
+form div {
+    margin-bottom: 12px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="email"],
+form select {
+    width: 100%;
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+}
+
+/* ボタン */
+button[type="submit"] {
+    background-color: #28a745;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+    display: block;
+    margin: 10px auto 0; /* 中央寄せ */
+}
+
+button[type="submit"]:hover {
+    background-color: #1e7e34;
+}
+
+/* 一覧に戻るリンク */
+a {
+    display: inline-block;
+    text-decoration: none;
+    color: #fff;
+    background-color: #007BFF;
+    padding: 6px 14px;
+    border-radius: 4px;
+    margin: 10px auto;
+    text-align: center;
+    display: block;
+    width: fit-content;
+}
+
+a:hover {
+    background-color: #0056b3;
+}
