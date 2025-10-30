@@ -1,7 +1,7 @@
 use training_db;
 
-CREATE TABLE contract_types (
+CREATE TABLE employee_types (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    employee_type_name VARCHAR(6464) NOT NULL UNIQUE,
+    employee_type_name VARCHAR(64) NOT NULL UNIQUE,
     PRIMARY KEY(id)
 );
