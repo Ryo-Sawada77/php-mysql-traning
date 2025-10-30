@@ -22,7 +22,7 @@ class EmployeeService
   }
 
  
-// 指定社員の編集用データを取得
+  // 指定社員の編集用データを取得
   public function edit(int $employee_number): ?Employee
   {
     $pdo = DBConnectionFactory::newConnection();
@@ -60,69 +60,60 @@ class EmployeeService
 
   public function getEmployeeDetail(int $employee_number): ?Employee
   {
-      $pdo = DBConnectionFactory::newConnection();
+    $pdo = DBConnectionFactory::newConnection();
 
-      $sql = "
-          SELECT
-              e.employee_number,
-              e.family_name,
-              e.address,
-              e.phone_number,
-              e.employee_type_id,
-              t.employee_type_name,
-              GROUP_CONCAT(em.email) AS company_emails
-          FROM employees AS e
-          LEFT JOIN employee_types AS t
-              ON e.employee_type_id = t.id
-          LEFT JOIN employee_company_emails AS em
-              ON e.employee_number = em.employee_number
-          WHERE e.employee_number = ?
-          GROUP BY e.employee_number
-      ";
+    // employees と employee_types を結合
+    $stmt = $pdo->prepare("
+        SELECT e.*, t.employee_type_name
+        FROM employees e
+        LEFT JOIN employee_types t ON e.employee_type_id = t.id
+        WHERE e.employee_number = ?
+    ");
+    $stmt->execute([$employee_number]);
+    $stmt->setFetchMode(\PDO::FETCH_CLASS, Employee::class);
+    $employee = $stmt->fetch();
 
-      $stmt = $pdo->prepare($sql);
-      $stmt->execute([$employee_number]);
+    if (!$employee) return null;
 
-      $stmt->setFetchMode(\PDO::FETCH_CLASS, \Em\Employee::class);
-      $employee = $stmt->fetch();
+    // メール情報を取得してセット
+    $stmt = $pdo->prepare("SELECT email FROM employee_company_emails WHERE employee_number = ?");
+    $stmt->execute([$employee_number]);
+    $emails = $stmt->fetchAll(\PDO::FETCH_COLUMN);
+    $employee->company_emails = $emails ?: []; // null の場合は空配列
 
-      // company_emails を配列に変換
-      if ($employee && isset($employee->company_emails)) {
-          $employee->company_emails = $employee->company_emails
-              ? explode(',', $employee->company_emails)
-              : [];
-      }
-
-      return $employee ?: null;
+    return $employee;
   }
 
-  public function updateEmails(Employee $employee): bool
+  public function createEmployee(\Em\Employee $employee): int
   {
-      $pdo = DBConnectionFactory::newConnection();
+    $pdo = DBConnectionFactory::newConnection();
 
-      // トランザクション開始（念のため）
-      $pdo->beginTransaction();
+    // employees テーブルに登録
+    $stmt = $pdo->prepare("
+        INSERT INTO employees (family_name, address, phone_number, employee_type_id)
+        VALUES (:family_name, :address, :phone_number, :employee_type_id)
+    ");
 
-      try {
-          // 既存のメールを削除
-          $stmt = $pdo->prepare("DELETE FROM employee_company_emails WHERE employee_number = ?");
-          $stmt->execute([$employee->employee_number]);
+    $stmt->execute([
+        ':family_name'      => $employee->family_name,
+        ':address'          => $employee->address,
+        ':phone_number'     => $employee->phone_number,
+        ':employee_type_id' => $employee->employee_type_id,
+    ]);
 
-          // 新しいメールを挿入
-          $stmt = $pdo->prepare("INSERT INTO employee_company_emails (employee_number, email) VALUES (?, ?)");
-          foreach ($employee->company_emails as $email) {
-              $email = trim($email);
-              if ($email === '') continue; // 空文字はスキップ
-              $stmt->execute([$employee->employee_number, $email]);
-          }
+    // 登録された社員番号を取得
+    $employee_number = (int)$pdo->lastInsertId();
 
-          $pdo->commit();
-          return true;
+    // company_emails テーブルに登録
+    if (!empty($employee->company_emails)) {
+        $stmt = $pdo->prepare("INSERT INTO employee_company_emails (employee_number, email) VALUES (?, ?)");
+        foreach ($employee->company_emails as $email) {
+            $email = trim($email);
+            if ($email === '') continue;
+            $stmt->execute([$employee_number, $email]);
+        }
+    }
 
-      } catch (\PDOException $e) {
-          $pdo->rollBack();
-          throw $e;
-      }
+    return $employee_number; // 作成された社員番号を返す
   }
-
 }
