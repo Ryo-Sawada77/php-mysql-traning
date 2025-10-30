@@ -24,6 +24,9 @@ $ docker-compose exec php-server bash
 
 # PHPバージョン確認
 root@XXXXXXXXXXXXX:/var/www/html# php --version
+
+# ローカルからコンテナ内のサーバー起動
+docker exec -it php-mysql-traninng-php-server-1 php -S 0.0.0.0:80 -t /var/www/html/public
 ```
 
 ## MySQL

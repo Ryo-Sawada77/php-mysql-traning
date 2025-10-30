@@ -1,0 +1,16 @@
+{
+    "name": "laravel/laravel",
+    "type": "project",
+    "description": "",
+    "keywords": [],
+    "license": "MIT",
+    "require": {
+    },
+    "require-dev": {
+    },
+    "autoload": {
+        "psr-4": {
+            "Em\\": "Em/"
+        }
+    }
+}
