@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $employee->employee_type_id = $_POST['employee_type_id'];
 
     $service->update($employee);
-    $service->updateEmails($employee);
+    // $service->updateEmails($employee);
     echo "更新が完了しました。<a href='index.php'>一覧へ戻る</a>";
     exit;
 }
@@ -59,8 +59,13 @@ $employee = $service->getEmployeeDetail($id);
     </div>
 
     <div>
-      <label>社員種別ID：</label>
-      <input type="text" name="employee_type_id" value="<?= htmlspecialchars($employee->employee_type_id) ?>">
+      <label>社員種別：</label>
+      <select name="employee_type_id" required>
+        <option value="">選択してください</option>
+        <option value="1" <?= $employee->employee_type_id == 1 ? 'selected' : '' ?>>1：正社員</option>
+        <option value="2" <?= $employee->employee_type_id == 2 ? 'selected' : '' ?>>2：契約社員</option>
+        <option value="3" <?= $employee->employee_type_id == 3 ? 'selected' : '' ?>>3：アルバイト</option>
+      </select>
     </div>
 
     <div>
