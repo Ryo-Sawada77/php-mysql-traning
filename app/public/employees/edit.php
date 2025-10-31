@@ -1,34 +1,39 @@
 <?php
-require_once __DIR__ . '/../../vendor/autoload.php';
+require __DIR__ . '/../../vendor/autoload.php';
 
 use Em\Service\EmployeeService;
+use Em\DBConnectionFactory;
 
-$service = new EmployeeService();
+// GETもしくはPOSTパラメーターから社員番号を取得して、その社員情報を取得
+$id = $_GET['employee_number'] ?? null;
+if($id === null) {
+  $id = $_POST['employee_number'] ?? null;
+}
+if ($id === null) {
+  exit('社員番号が指定されていません');
+}
+
+$service = new EmployeeService(DBConnectionFactory::newConnection());
+$employee = $service->fetchEmployeeDetail($id);
 
 // POST送信されている場合 → 更新処理を実行
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $employee = new \Em\Employee();
-  $employee->employee_number  = $_POST['employee_number'];
   $employee->family_name      = $_POST['family_name'];
   $employee->address          = $_POST['address'];
   $employee->phone_number     = $_POST['phone_number'];
   $employee->employee_type_id = $_POST['employee_type_id'];
 
   $service->update($employee);
-  // $service->updateEmails($employee);
+  $service->updateEmails($employee->employee_number, $_POST['email']);
 
   // 更新後に詳細ページにリダイレクト
   header("Location: detail.php?employee_number=" . $employee->employee_number);
   exit;
 }
 
-// GETパラメータから社員番号を取得して、その社員情報を取得
-$id = $_GET['employee_number'] ?? null;
-if (!$id) {
-  exit('社員番号が指定されていません');
-}
 
-$employee = $service->getEmployeeDetail($id);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -60,7 +65,7 @@ $employee = $service->getEmployeeDetail($id);
 
     <div>
       <label>電話番号：</label>
-      <input type="text" name="phone_number" value="<?= htmlspecialchars($employee->phone_number) ?>">
+      <input type="text" pattern="[0-9\-]+" name="phone_number" value="<?= htmlspecialchars($employee->phone_number) ?>">
     </div>
 
     <div>
