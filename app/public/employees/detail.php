@@ -2,12 +2,13 @@
 require __DIR__ . '/../../vendor/autoload.php';
 
 use Em\Service\EmployeeService;
+use Em\DBConnectionFactory;
 
 $employee_number = $_GET['employee_number'] ?? null;
 if (!$employee_number) exit('社員番号が指定されていません');
 
-$service = new EmployeeService();
-$employee = $service->getEmployeeDetail((int)$employee_number);
+$service = new EmployeeService(DBConnectionFactory::newConnection());
+$employee = $service->fetchEmployeeDetail((int)$employee_number);
 
 if (!$employee) exit('該当する社員が見つかりません');
 ?>
@@ -22,7 +23,7 @@ if (!$employee) exit('該当する社員が見つかりません');
 
 <body>
   <h1>社員詳細</h1>
-  <a href="index.php" class="link">一覧に戻る</a>
+  <a href="index.php" class="back-link">一覧に戻る</a>
   <div class="details">
     <p>
       <strong>社員番号:</strong> <?= htmlspecialchars($employee->employee_number) ?>
@@ -44,14 +45,28 @@ if (!$employee) exit('該当する社員が見つかりません');
       <strong>社員種別名:</strong> <?= htmlspecialchars($employee->employee_type_name, ENT_QUOTES, 'UTF-8') ?>
     </p>
 
-    <p>
+    <!-- <p>
       <strong>Emails:</strong><?php foreach ($employee->company_emails as $email): ?>
         <?= htmlspecialchars($email, ENT_QUOTES, 'UTF-8')?><br>
       <?php endforeach; ?>
-    </p>
-    
+    </p> -->
+  
+    <table>
+      <tr>
+        <th style="width: 120px; text-align:left; vertical-align:top;">Email:</th>
+        <td>
+          <table>
+            <?php foreach ($employee->company_emails as $email): ?>
+              <tr>
+                <td><?= htmlspecialchars($email, ENT_QUOTES, 'UTF-8') ?></td>
+              </tr>
+            <?php endforeach; ?>
+          </table>
+        </td>
+      </tr>
+    </table>
 
-    <a class="back-link" href="edit.php?employee_number=<?= $employee->employee_number ?> ">編集する</a>
+    <a class="edit-buttun" href="edit.php?employee_number=<?= $employee->employee_number ?> ">編集する</a>
     <br>
     
   </div>
