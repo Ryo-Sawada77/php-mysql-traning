@@ -14,6 +14,10 @@ body {
     color: #333;
 }
 
+th {
+    text-align: left;
+}
+
 /* 見出し */
 h1 {
     margin-bottom: 20px;
@@ -24,68 +28,19 @@ h1 {
 
 /* 新規登録リンク */
 a {
-    display: inline-block; /* もともと a タグに適用済み */
+    display: inline-block; 
     text-decoration: none;
     color: #fff;
     background-color: #007BFF;
     padding: 8px 16px;
     border-radius: 4px;
-    margin: 0 auto 20px; /* 上下余白を作り、横は自動で中央寄せ */
-    display: block;       /* block にすることで中央寄せが効く */
+    margin: 0 auto 20px; 
+    display: block;       
     text-align: center;
-    width: fit-content;   /* 幅をテキストに合わせる */
+    width: fit-content;   
     
 }
 
 a:hover {
     background-color: #0056b3;
-}
-
-/* 社員リスト */
-ul {
-    list-style-type: none;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 0;
-}
-
-/* 社員リストの各項目 */
-.employee-list {
-    display: flex;
-    flex-wrap: wrap; /* アイテムを折り返す */
-    gap: 16px;       /* アイテム間の余白 */
-    padding: 0;
-    list-style: none;
-    max-width: 1000px;
-    margin: 0 auto; /* 中央寄せ */
-}
-
-.employee-list li {
-    background-color: #fff;
-    border-radius: 6px;
-    padding: 12px 16px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    flex: 1 1 calc(50% - 16px); /* 2列表示の幅 */
-    display: flex;
-    flex-direction: column; /* ボタンは下に */
-}
-
-.employee-info {
-    margin-bottom: 8px;
-    word-break: break-word;
-}
-
-.detail-button {
-    display: inline-block;
-    background-color: #28a745;
-    color: #fff;
-    padding: 4px 10px;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 0.9em;
-    align-self: flex-start; /* 左寄せ */
-}
-
-.detail-button:hover {
-    background-color: #1e7e34;
 }

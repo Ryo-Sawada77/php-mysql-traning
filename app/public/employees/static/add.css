@@ -28,8 +28,8 @@ form {
     padding: 20px;
     border-radius: 6px;
     max-width: 600px;
-    margin: 0 auto 20px; /* 中央寄せ＋下余白 */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    margin: 0 auto 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 /* 各フォーム項目 */
@@ -53,7 +53,7 @@ form select {
     font-size: 1em;
 }
 
-/* ボタン */
+/* 登録ボタン */
 button[type="submit"] {
     background-color: #28a745;
     color: #fff;
@@ -63,14 +63,14 @@ button[type="submit"] {
     cursor: pointer;
     font-size: 1em;
     display: block;
-    margin: 10px auto 0; /* 中央寄せ */
+    margin: 10px auto 0; 
 }
 
 button[type="submit"]:hover {
     background-color: #1e7e34;
 }
 
-/* 一覧に戻るリンク */
+/* 一覧に戻る */
 a {
     display: inline-block;
     text-decoration: none;

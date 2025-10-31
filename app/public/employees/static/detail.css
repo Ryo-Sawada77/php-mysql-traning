@@ -60,7 +60,7 @@ h1 {
 }
 
 /* ボタンリンク */
-.link {
+.back-link {
     display: inline-block;
     text-decoration: none;
     color: #fff;
@@ -72,11 +72,11 @@ h1 {
     width: fit-content;
 }
 
-.link:hover {
+.back-link:hover {
     background-color: #0056b3;
 }
 
-.back-link {
+.edit-buttun {
     display: block;
     text-decoration: none;
     color: #fff;
@@ -88,6 +88,6 @@ h1 {
     width: fit-content;
 }
 
-.back-link:hover {
+.edit-buttun:hover {
     background-color: #1e7e34;
 }
