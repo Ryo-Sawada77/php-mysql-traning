@@ -2,8 +2,9 @@
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use Em\Service\EmployeeService;
+use Em\DBConnectionFactory;
 
-$service = new EmployeeService();
+$service = new EmployeeService(DBConnectionFactory::newConnection());
 
 // POST送信された場合 → 新規登録処理
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -16,8 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $employee_number = $service->createEmployee($employee);
 
-    echo "社員登録が完了しました。社員番号: $employee_number<br>";
-    echo "<a href='index.php'>一覧に戻る</a>";
+    header("Location: detail.php?employee_number=" . ($employee_number));
     exit;
 }
 ?>
